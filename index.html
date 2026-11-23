@@ -1,0 +1,71 @@
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora HTTP</title>
+</head>
+
+<body>
+
+    <h1>Calculadora matemática</h1>
+
+    <form id="formulario">
+
+        <label for="num1">Primer número:</label>
+        <input type="number" id="num1" min="-99999" max="99999" step="1" required>
+
+        <br><br>
+
+        <label for="num2">Segundo número:</label>
+        <input type="number" id="num2" min="-99999" max="99999" step="1" required>
+
+        <br><br>
+
+        <label for="operacion">Operación:</label>
+
+        <select id="operacion">
+            <option value="suma">Suma</option>
+            <option value="resta">Resta</option>
+            <option value="multiplicacion">Multiplicación</option>
+            <option value="potencia">Potencia</option>
+        </select>
+
+        <br><br>
+
+        <button type="submit">Calcular</button>
+
+    </form>
+
+    <h2 id="resultado"></h2>
+
+    <script>
+        const formulario = document.getElementById("formulario");
+
+        formulario.addEventListener("submit", async function (event) {
+
+            event.preventDefault();
+
+            const num1 = document.getElementById("num1").value;
+            const num2 = document.getElementById("num2").value;
+            const operacion = document.getElementById("operacion").value;
+
+            const url = `http://localhost:8080/calcular?num1=${num1}&num2=${num2}&operacion=${operacion}`;
+
+            try {
+                const respuesta = await fetch(url);
+                const datos = await respuesta.text();
+
+                document.getElementById("resultado").textContent = datos;
+
+            } catch (error) {
+                document.getElementById("resultado").textContent =
+                    "No se ha podido conectar con el servidor";
+            }
+        });
+    </script>
+
+</body>
+</html>
